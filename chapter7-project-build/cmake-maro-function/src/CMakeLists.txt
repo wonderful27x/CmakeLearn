@@ -1,0 +1,8 @@
+# 这个命令会将当前目录，添加到CMakeLists.txt中定义的所有目标的interface_include_directory属性中。换句话说，我们不需要使用target_include_directory来添加cpp_test所需头文件的位置。
+set(CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON)
+
+add_library(sum_integers sum_integers.cpp)
+
+add_executable(sum_up main.cpp)
+
+target_link_libraries(sum_up sum_integers)

@@ -16,7 +16,7 @@ list(APPEND CXX_BASIC_FLAGS "-g3" "-O1")
 include(CheckCXXCompilerFlag)
 
 set(ASAN_FLAGS "-fsanitize=address -fno-omit-frame-pointer")
-# check_cxx_compiler_flag函数用于检测编译器是否理解一组标志，check_cxx_compiler_flag 是 check_cxx_source_compiles的封装
+# check_cxx_compiler_flag函数用于检测编译器是否理解一组标志，check_cxx_compiler_flag 是 check_cxx_source_compiles的封装, 而check_cxx_source_compiles是try_compil的封装
 # 此外,Sanitize的这组标志需要设置给连接器，调用check_cxx_compiler_flag之前先设置标志CMAKE_REQUIRED_FLAGS,
 # 否则标志检测只对编译器起作用, 导致假阴性
 set(CMAKE_REQUIRED_FLAGS ${ASAN_FLAGS})
