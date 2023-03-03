@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="Linux-x86_64"
+	BuildStamp="20230303-1002-Experimental"
+	Name="YL4946-A10342PC"
+	Generator="ctest-3.16.3"
+	CompilerName=""
+	CompilerVersion=""
+	OSName="Linux"
+	Hostname="YL4946-A10342PC"
+	OSRelease="4.4.0-18362-Microsoft"
+	OSVersion="#1-Microsoft Mon Mar 18 12:02:00 PST 2019"
+	OSPlatform="x86_64"
+	Is64Bits="1"
+	VendorString="GenuineIntel"
+	VendorID="Intel Corporation"
+	FamilyID="6"
+	ModelID="158"
+	ProcessorCacheSize="256"
+	NumberOfLogicalCPU="4"
+	NumberOfPhysicalCPU="2"
+	TotalVirtualMemory="12737"
+	TotalPhysicalMemory="16267"
+	LogicalProcessorsPerPhysical="2"
+	ProcessorClockFrequency="3912"
+	>
+	<Build>
+		<StartDateTime>Mar 03 18:02 CST</StartDateTime>
+		<StartBuildTime>1677837731</StartBuildTime>
+		<BuildCommand>/usr/bin/cmake --build . --config "Debug" -- -i -j4</BuildCommand>
+		<Log Encoding="base64" Compression="bin/gzip"/>
+		<EndDateTime>Mar 03 18:02 CST</EndDateTime>
+		<EndBuildTime>1677837733</EndBuildTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Build>
+</Site>

@@ -1,0 +1,5 @@
+leaky 0 0
+use_after_free 0 0
+---
+leaky
+use_after_free

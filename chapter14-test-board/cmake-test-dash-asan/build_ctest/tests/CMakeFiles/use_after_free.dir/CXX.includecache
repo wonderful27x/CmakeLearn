@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../src/buggy.hpp
+
+/mnt/e/wonderful/LEARN/cmake/cmake-code/chapter14-test-board/cmake-test-dash-asan/tests/use_after_free.cpp
+buggy.hpp
+/mnt/e/wonderful/LEARN/cmake/cmake-code/chapter14-test-board/cmake-test-dash-asan/tests/buggy.hpp
+

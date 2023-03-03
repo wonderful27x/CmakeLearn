@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="Linux-x86_64"
+	BuildStamp="20230303-1002-Experimental"
+	Name="YL4946-A10342PC"
+	Generator="ctest-3.16.3"
+	CompilerName=""
+	CompilerVersion=""
+	OSName="Linux"
+	Hostname="YL4946-A10342PC"
+	OSRelease="4.4.0-18362-Microsoft"
+	OSVersion="#1-Microsoft Mon Mar 18 12:02:00 PST 2019"
+	OSPlatform="x86_64"
+	Is64Bits="1"
+	VendorString="GenuineIntel"
+	VendorID="Intel Corporation"
+	FamilyID="6"
+	ModelID="158"
+	ProcessorCacheSize="256"
+	NumberOfLogicalCPU="4"
+	NumberOfPhysicalCPU="2"
+	TotalVirtualMemory="12737"
+	TotalPhysicalMemory="16267"
+	LogicalProcessorsPerPhysical="2"
+	ProcessorClockFrequency="3912"
+	>
+	<DynamicAnalysis Checker="AddressSanitizer">
+		<StartDateTime>Mar 03 18:02 CST</StartDateTime>
+		<StartTestTime>1677837733</StartTestTime>
+		<TestList>
+			<Test>./tests/leaky</Test>
+			<Test>./tests/use_after_free</Test>
+		</TestList>
+		<Test Status="failed">
+			<Name>leaky</Name>
+			<Path>./tests</Path>
+			<FullName>./tests/leaky</FullName>
+			<FullCommandLine>/usr/bin/cmake "-E" "env" "ASAN_OPTIONS=log_path='/mnt/e/wonderful/LEARN/cmake/cmake-code/chapter14-test-board/cmake-test-dash-asan/build_ctest/Testing/Temporary/MemoryChecker.1.log'" "/mnt/e/wonderful/LEARN/cmake/cmake-code/chapter14-test-board/cmake-test-dash-asan/build_ctest/tests/leaky"</FullCommandLine>
+			<Results>
+				<Defect type="Direct leak">1</Defect>
+			</Results>
+			<Log compression="gzip" encoding="base64">eJytkl9LwzAQwN/7KQ582ZA23VbXrdjBQN+cQsUHESn5c611bTKSlG1+epNuij5rCEfuLpf73eWC/K8ryPPlMpnm+W1RPBQZ3CHdPlLZ2OYDdQYCLXKLAjrslD5C69wmCK7Z6qbRzjMYrglbwQ8dVAWLOI6BHS2OzBgaCRNQ7N1d8CptW8Wpf7XSqssCcOsihviQVrNKzFhapYvUB6kdamqVBon7l9dRL01TSxfWKlmPIYrI9zaak7Zh5oucUHccROliS4GtKyTiPJvE6Snf5CtfkmAyY8Lnq3rJbaNk6as4jsZAOmkJkr2SAnXVt+Tudl3cE97RLZ5kyJVwxze6s6gnSWjR2JApqsXZPxgENW/hgORBWV/Xx4jvdtmZZfqLZXnlWTrqxP/n96ohQ30DQXIimH13f06TeDH1BGXpOspLY6m25YAz8j0mh8W8nCdh28j+ENay90YeGRXNL+PD1EePg+DxabNZF88ZrIXQaMyPmfo1Gp4ExWlCznPhPsB5ouATMJbodw==</Log>
+		</Test>
+		<Test Status="failed">
+			<Name>use_after_free</Name>
+			<Path>./tests</Path>
+			<FullName>./tests/use_after_free</FullName>
+			<FullCommandLine>/usr/bin/cmake "-E" "env" "ASAN_OPTIONS=log_path='/mnt/e/wonderful/LEARN/cmake/cmake-code/chapter14-test-board/cmake-test-dash-asan/build_ctest/Testing/Temporary/MemoryChecker.2.log'" "/mnt/e/wonderful/LEARN/cmake/cmake-code/chapter14-test-board/cmake-test-dash-asan/build_ctest/tests/use_after_free"</FullCommandLine>
+			<Results>
+				<Defect type="heap-use-after-free">1</Defect>
+			</Results>
+			<Log compression="gzip" encoding="base64">eJzdV9tu4zYQfddXDNCXuF1ZtK2LbawDuG26u8BeCmf7sAgWAsWLrUYhBZJKnP36DuVLbNctsnGKABUMwZ7hHJ4hD2foyeTEJ3hdnC8ErcPGipBKJ0wojRCvo+IcJpPRKE4mk4vZ7NNsDFPOjbD2kqrSld+EGcORQNAK6GogkGXaT0j7xHwI1EHN0JjJIpFZQkksYyjq1iIlz0ZZWjACdt9SkGB2Mf0VtASLs0KLc4DsFkZQDp9JAPj8QPYnGUCpQDaKuVKrHOnmLd3c0z3rQHSjXCSiO624MLKpovcX09nHiN3Qa7F6h0xz/LqgNYb14tAJ68JCU8PX/tbAqV2E1FIVWcOiopnP77usrsf94YpVb5fVYJR4VjcUX89PwP+00X6mLZd4RaW/oZJmSUyGfU8lz6uyYLl11Li85XUWoSVaDtM8jcOqVM0ynKvGG1nX6m76E1n2fXRnBTrYza/PeAvawiHSs6dYNGXFc+atR9NFcj0k0QmCA62UFirNqBMcRkPU3z1GI1VbcuE1NsRhoTeCEXPUC1ztxPcIefXws09i0gn8ZBxhHkSIx8KI8YEUU9aXqZB+UXQtDHXaABeVcOLq69mtLvmPHeh2o+3HawhX2m4OW9Rm7V+5Enf5KrTL2LiXHtWXiF9Y9YdSe3nVD55Z9UFtxG2pG1vdA602onqMEkQ2zPaUgFuKMmhQhXOFGJVW86fKgWTH5MBHLyuH3uj/L4fLPz58mM6+PLZR/vd951+3PLhcUK7v1gWQGt0ojsoV0CJsergXL1kSFlPfkYdY8cYg+Xd9DhCSkxHSkxGykxGGT0CYnO8ijB6BcCX513/mQE/OojgZgZ2MwE9GEE9A2BE/VGIuUPtnWgmwO3YjsMBboZz1l866rkqs8P5K0B6Zjj8a65NOi0qM4eEh/iL6O9aQEvvC9iytRhEszFgFsfrEQBIgKZAMcPhbLBFIRTqcl39DLhtASdH7W3vL8GVkfS/Zev1qXDrKro8Fy97We1PyvyH3t15TzhcHwXKw9bZ1A72uMZuJZbL1YmVZj7AMO5ofIP2d5E2lC1odTuq9owdviTUStOG+Sq69qV88XVqtVu0U8bdOkL69/aKVw+KMM+pbrJ2VvtuwYn5TjKH3wLS+Lvd2Baj3vlPOUNDFn4LtJ1wUPhaLNnLCZBStdoOlQO97v8KrVr+fFvN7NGvX8IibeeS14ua03uOEXhZs/mhNf/40+/zu45vgLxJ2UBk=</Log>
+		</Test>
+		<DefectList>
+			<Defect Type="Direct leak"/>
+			<Defect Type="heap-use-after-free"/>
+		</DefectList>
+		<EndDateTime>Mar 03 18:02 CST</EndDateTime>
+		<EndTestTime>1677837733</EndTestTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</DynamicAnalysis>
+</Site>

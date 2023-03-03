@@ -1,0 +1,99 @@
+Start testing: Mar 03 18:02 CST
+----------------------------------------------------------
+1/2 Testing: leaky
+1/2 Test: leaky
+Command: "/mnt/e/wonderful/LEARN/cmake/cmake-code/chapter14-test-board/cmake-test-dash-asan/build_ctest/tests/leaky"
+Directory: /mnt/e/wonderful/LEARN/cmake/cmake-code/chapter14-test-board/cmake-test-dash-asan/build_ctest/tests
+"leaky" start time: Mar 03 18:02 CST
+Output:
+----------------------------------------------------------
+
+=================================================================
+==9938==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 8000 byte(s) in 1 object(s) allocated from:
+    #0 0x7f42bbaaf787 in operator new[](unsigned long) ../../../../src/libsanitizer/asan/asan_new_delete.cc:107
+    #1 0x7f42bc4193bd in function_leaky() /mnt/e/wonderful/LEARN/cmake/cmake-code/chapter14-test-board/cmake-test-dash-asan/src/buggy.cpp:7
+    #2 0x7f42bc419395 in main /mnt/e/wonderful/LEARN/cmake/cmake-code/chapter14-test-board/cmake-test-dash-asan/tests/leaky.cpp:4
+    #3 0x7f42bb5d4082 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x24082)
+
+SUMMARY: AddressSanitizer: 8000 byte(s) leaked in 1 allocation(s).
+<end of output>
+Test time =   0.17 sec
+----------------------------------------------------------
+Test Failed.
+"leaky" end time: Mar 03 18:02 CST
+"leaky" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/2 Testing: use_after_free
+2/2 Test: use_after_free
+Command: "/mnt/e/wonderful/LEARN/cmake/cmake-code/chapter14-test-board/cmake-test-dash-asan/build_ctest/tests/use_after_free"
+Directory: /mnt/e/wonderful/LEARN/cmake/cmake-code/chapter14-test-board/cmake-test-dash-asan/build_ctest/tests
+"use_after_free" start time: Mar 03 18:02 CST
+Output:
+----------------------------------------------------------
+=================================================================
+==9940==ERROR: AddressSanitizer: heap-use-after-free on address 0x6250000004d8 at pc 0x7f66076a04f4 bp 0x7fffe2041580 sp 0x7fffe2041570
+READ of size 8 at 0x6250000004d8 thread T0
+    #0 0x7f66076a04f3 in function_use_after_free() /mnt/e/wonderful/LEARN/cmake/cmake-code/chapter14-test-board/cmake-test-dash-asan/src/buggy.cpp:28
+    #1 0x7f66076a0395 in main /mnt/e/wonderful/LEARN/cmake/cmake-code/chapter14-test-board/cmake-test-dash-asan/tests/use_after_free.cpp:4
+    #2 0x7f6606854082 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x24082)
+    #3 0x7f66076a02cd in _start (/mnt/e/wonderful/LEARN/cmake/cmake-code/chapter14-test-board/cmake-test-dash-asan/build_ctest/tests/use_after_free+0x12cd)
+
+0x6250000004d8 is located 984 bytes inside of 8000-byte region [0x625000000100,0x625000002040)
+freed by thread T0 here:
+    #0 0x7f6606d2f6ef in operator delete[](void*) ../../../../src/libsanitizer/asan/asan_new_delete.cc:168
+    #1 0x7f66076a03e4 in function_use_after_free() /mnt/e/wonderful/LEARN/cmake/cmake-code/chapter14-test-board/cmake-test-dash-asan/src/buggy.cpp:24
+    #2 0x7f66076a0395 in main /mnt/e/wonderful/LEARN/cmake/cmake-code/chapter14-test-board/cmake-test-dash-asan/tests/use_after_free.cpp:4
+    #3 0x7f6606854082 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x24082)
+
+previously allocated by thread T0 here:
+    #0 0x7f6606d2e787 in operator new[](unsigned long) ../../../../src/libsanitizer/asan/asan_new_delete.cc:107
+    #1 0x7f66076a03d9 in function_use_after_free() /mnt/e/wonderful/LEARN/cmake/cmake-code/chapter14-test-board/cmake-test-dash-asan/src/buggy.cpp:19
+    #2 0x7f66076a0395 in main /mnt/e/wonderful/LEARN/cmake/cmake-code/chapter14-test-board/cmake-test-dash-asan/tests/use_after_free.cpp:4
+    #3 0x7f6606854082 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x24082)
+
+SUMMARY: AddressSanitizer: heap-use-after-free /mnt/e/wonderful/LEARN/cmake/cmake-code/chapter14-test-board/cmake-test-dash-asan/src/buggy.cpp:28 in function_use_after_free()
+Shadow bytes around the buggy address:
+  0x0c4a7fff8040: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x0c4a7fff8050: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x0c4a7fff8060: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x0c4a7fff8070: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x0c4a7fff8080: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+=>0x0c4a7fff8090: fd fd fd fd fd fd fd fd fd fd fd[fd]fd fd fd fd
+  0x0c4a7fff80a0: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x0c4a7fff80b0: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x0c4a7fff80c0: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x0c4a7fff80d0: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x0c4a7fff80e0: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+  Shadow gap:              cc
+==9940==ABORTING
+<end of output>
+Test time =   0.16 sec
+----------------------------------------------------------
+Test Failed.
+"use_after_free" end time: Mar 03 18:02 CST
+"use_after_free" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Mar 03 18:02 CST

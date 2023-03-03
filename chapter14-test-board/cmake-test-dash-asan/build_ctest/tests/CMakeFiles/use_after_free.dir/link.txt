@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/use_after_free.dir/use_after_free.cpp.o  -o use_after_free  ../src/libbuggy.a -lasan 
