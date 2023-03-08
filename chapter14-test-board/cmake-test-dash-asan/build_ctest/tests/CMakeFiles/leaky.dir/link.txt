@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/leaky.dir/leaky.cpp.o  -o leaky  ../src/libbuggy.a -lasan 
