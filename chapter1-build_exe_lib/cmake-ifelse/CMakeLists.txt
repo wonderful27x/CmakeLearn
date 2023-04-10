@@ -54,6 +54,14 @@ message(STATUS "C++ flags, minimal Release configuration: ${CMAKE_CXX_FLAGS_MINS
 # 通过外部定义宏控制库类型
 option(USE_LIBRARY "Compile sources into a library" OFF)
 
+# test
+set(MAKE_STATIC "MAKE_${upper_module_name}_STATIC")
+set(MAKE_SHARED "MAKE_${upper_module_name}_SHARED")
+option("U_${MAKE_STATIC}" "Compile source into a static library" OFF)
+option("U_${MAKE_SHARED}" "Compile source into a shared library" ON)
+message(STATUS "make static: ${U_${MAKE_STATIC}}")
+message(STATUS "make shared: ${U_${MAKE_SHARED}}")
+
 message(STATUS "Compile sources into a library? ${USE_LIBRARY}")
 
 include(CMakeDependentOption)
