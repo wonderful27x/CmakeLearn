@@ -12,6 +12,7 @@ message(STATUS "CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
 
 include(ExternalProject)
 
+# 超级构建是在build时运行！！！
 # 使用ExternalProject_Add函数将外部项目添加进来，
 # 外部项目名叫${PROJECT_NAME}_core，它是一个完整cmake项目，它有project(xxx)语句
 # SOURCE_DIR指定外部项目源目录
