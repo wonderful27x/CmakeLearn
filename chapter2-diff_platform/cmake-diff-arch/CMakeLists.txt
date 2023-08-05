@@ -31,6 +31,22 @@ else()
   message(STATUS "host processor architecture is unknown")
 endif()
 
+# 设置执行、静态和动态库目标构建的输出位置，让用户在不安装时也能找到
+# 使用GNUInstallDirs.cmake模块,这将确保的项目布局的合理性和可移植性
+# CMAKE_INSTALL_BINDIR：这将用于定义用户可执行文件所在的子目录，即所选安装目录下的bin目录。
+# CMAKE_INSTALL_LIBDIR：这将扩展到目标代码库(即静态库和动态库)所在的子目录。在64位系统上，它是lib64，而在32位系统上，它只是lib。
+# CMAKE_INSTALL_INCLUDEDIR：最后，我们使用这个变量为C头文件获取正确的子目录，该变量为include。
+include(GNUInstallDirs)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
+message(STATUS "静态库构建输出目录: ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY} \n
+PROJECT_BINARY_DIR: ${PROJECT_BINARY_DIR} CMAKE_INSTALL_LIBDIR: ${CMAKE_INSTALL_LIBDIR}")
+message(STATUS "动态库构建输出目录: ${CMAKE_LIBRARY_OUTPUT_DIRECTORY} \n
+PROJECT_BINARY_DIR: ${PROJECT_BINARY_DIR} CMAKE_INSTALL_LIBDIR: ${CMAKE_INSTALL_LIBDIR}")
+message(STATUS "可执行文件构建输出目录: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} \n
+PROJECT_BINARY_DIR: ${PROJECT_BINARY_DIR} CMAKE_INSTALL_BINDIR: ${CMAKE_INSTALL_BINDIR}")
+
 # 二. 另一种获取架构的方法，利用cmake的错误返回码，先运行try_run进行测试
 # see https://github.com/axr/cmake/blob/master/targetarch.cmake
 #if defined(__i386) || defined(__i386__) || defined(_M_IX86)

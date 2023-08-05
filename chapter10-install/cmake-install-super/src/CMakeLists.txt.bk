@@ -1,3 +1,13 @@
+cmake_minimum_required(VERSION 3.6 FATAL_ERROR)
+
+project(recipe-04_core
+  LANGUAGES CXX
+  )
+
+# 我们自己的代码，这是一个完全独立的项目
+# 它依赖于message, 而message在message_external中处理
+# 如果系统没有则执行超级构建并安装，所以这里使用find_package总能找到
+
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

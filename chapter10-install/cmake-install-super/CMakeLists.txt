@@ -53,33 +53,37 @@ message(STATUS "${PROJECT_NAME} staged install: ${STAGED_INSTALL_PREFIX}")
 # 添加子项目message_external
 add_subdirectory(external/upstream)
 
-# 将我们自己的代码作为外部项目执行超级构建
-# 依赖于message_external
-# 注意我们的代码会依赖消息库message,而message_external子项目就是为了处理message依赖的
-# 它首先会查找系统上是否安装，没有则下载然后执行超级构建，并安装且提供Find<name>.cmake查找模块
-# 所以我们的代码里无论如何都可以直接使用find_package命令
-include(ExternalProject)
-ExternalProject_Add(${PROJECT_NAME}_core
-  DEPENDS
-    message_external
-  SOURCE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/src
-  CMAKE_ARGS
-    -DCMAKE_INSTALL_PREFIX=${STAGED_INSTALL_PREFIX}
-    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-    -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
-    -DCMAKE_CXX_EXTENSIONS=${CMAKE_CXX_EXTENSIONS}
-    -DCMAKE_CXX_STANDARD_REQUIRED=${CMAKE_CXX_STANDARD_REQUIRED}
-    # 传递message_DIR用于查找message库
-    # 这个值是在message_external中设置的  
-    -Dmessage_DIR=${message_DIR}
-  CMAKE_CACHE_ARGS
-    -DCMAKE_CXX_FLAGS:STRING=${CMAKE_CXX_FLAGS}
-    -DCMAKE_PREFIX_PATH:PATH=${CMAKE_PREFIX_PATH}
-  BUILD_ALWAYS
-    1
-  )
+# # 将我们自己的代码作为外部项目执行超级构建
+# # 依赖于message_external
+# # 注意我们的代码会依赖消息库message,而message_external子项目就是为了处理message依赖的
+# # 它首先会查找系统上是否安装，没有则下载然后执行超级构建，并安装且提供Find<name>.cmake查找模块
+# # 所以我们的代码里无论如何都可以直接使用find_package命令
+# include(ExternalProject)
+# ExternalProject_Add(${PROJECT_NAME}_core
+#   DEPENDS
+#     message_external
+#   SOURCE_DIR
+#     ${CMAKE_CURRENT_SOURCE_DIR}/src
+#   CMAKE_ARGS
+#     -DCMAKE_INSTALL_PREFIX=${STAGED_INSTALL_PREFIX}
+#     -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+#     -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+#     -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
+#     -DCMAKE_CXX_EXTENSIONS=${CMAKE_CXX_EXTENSIONS}
+#     -DCMAKE_CXX_STANDARD_REQUIRED=${CMAKE_CXX_STANDARD_REQUIRED}
+#     # 传递message_DIR用于查找message库
+#     # 这个值是在message_external中设置的  
+#     -Dmessage_DIR=${message_DIR}
+#   CMAKE_CACHE_ARGS
+#     -DCMAKE_CXX_FLAGS:STRING=${CMAKE_CXX_FLAGS}
+#     -DCMAKE_PREFIX_PATH:PATH=${CMAKE_PREFIX_PATH}
+#   BUILD_ALWAYS
+#     1
+#   )
+
+# 另一种写法，不使用超级构建 
+add_subdirectory(src)
+add_dependencies(use_message message-shared)
 
 enable_testing()
 
