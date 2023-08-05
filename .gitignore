@@ -1,4 +1,6 @@
 **/build/
-**/build-*/
+**/build_*/
+**/cmake_ign_*/
 **/.vs/
 **/out/
+*.swp
