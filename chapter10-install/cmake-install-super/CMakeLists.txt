@@ -29,6 +29,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}
 set(INSTALL_LIBDIR ${CMAKE_INSTALL_LIBDIR} CACHE PATH "Installation directory for libraries")
 set(INSTALL_BINDIR ${CMAKE_INSTALL_BINDIR} CACHE PATH "Installation directory for executables")
 set(INSTALL_INCLUDEDIR ${CMAKE_INSTALL_INCLUDEDIR} CACHE PATH "Installation directory for header files")
+# 这里设置了cmake文件的安装目录, 所以我们是知道的
 if(WIN32 AND NOT CYGWIN)
   set(DEF_INSTALL_CMAKEDIR CMake)
 else()
@@ -43,12 +44,12 @@ foreach(p LIB BIN INCLUDE CMAKE)
   unset(_path)
 endforeach()
 
-# # 设置超级构建目录
-# set_property(DIRECTORY PROPERTY EP_BASE ${CMAKE_BINARY_DIR}/subprojects)
+# 设置超级构建目录
+set_property(DIRECTORY PROPERTY EP_BASE ${CMAKE_BINARY_DIR}/subprojects)
 
-# # 超级构建安装目录
-# set(STAGED_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/stage)
-# message(STATUS "${PROJECT_NAME} staged install: ${STAGED_INSTALL_PREFIX}")
+# 超级构建安装目录
+set(STAGED_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/stage)
+message(STATUS "${PROJECT_NAME} staged install: ${STAGED_INSTALL_PREFIX}")
 
 # 添加子项目message_external
 # add_subdirectory(external/upstream)
@@ -81,48 +82,78 @@ endforeach()
 #     1
 #   )
 
-# # 换一种写法，不使用超级构建, 使用execute_process下载/编译/安装，然后使用find_package
-find_package(Git REQUIRED)
-execute_process(
-    COMMAND ${GIT_EXECUTABLE} clone https://github.com/dev-cafe/message.git
-    RESULT_VARIABLE _cmd_result
-    OUTPUT_VARIABLE _git_msg
-    WORKING_DIRECTORY
-        ${CMAKE_BINARY_DIR}
-   ) 
-message(STATUS "Git result: ${_cmd_result}")
-message(STATUS "Git message: ${_git_msg}")
+# 换一种写法，不使用超级构建, 使用execute_process下载/编译/安装，然后使用find_package
+# 最好的方案是每个比较独立的工程，包括第三方工程，我们都使用超级构建，但是超级构建现在有这样一个问题，
+# 需要我们将-D参数传递，但是cmake命令中-D参数可能是变化的，那这些参数就难以全部传递，当然也可以通过配置到文件中进行读取来实现, 但会麻烦
+# 所以我们希望自己的工程不使用超级构建，而第三方工程使用超级构建，然而这又会出现依赖问题，一个超级构建可以依赖另一个超级构建，
+# 但是一个超级构建似乎无法与非超级构建中的库形成依赖，因为超级构建发生在buid时,于是我们做了下面的工作，都不使用超级构建，但这并不是最优解
+# 超级构建还是很好的，如果解决了那些参数传递的问题
 
+# 这种方式没有使用超级构建，而是直接cmake --build了原工程
+# find_package(Git REQUIRED)
+# execute_process(
+#     COMMAND ${GIT_EXECUTABLE} clone https://github.com/dev-cafe/message.git
+#     RESULT_VARIABLE _cmd_result
+#     OUTPUT_VARIABLE _git_msg
+#     WORKING_DIRECTORY
+#         ${CMAKE_BINARY_DIR}
+#    ) 
+# message(STATUS "Git result: ${_cmd_result}")
+# message(STATUS "Git message: ${_git_msg}")
+#
+# execute_process(
+#     COMMAND
+#         ${CMAKE_COMMAND} -H${CMAKE_BINARY_DIR}/message
+#                          -B${CMAKE_BINARY_DIR}/cmake_ign_msg_build
+#                          -G${CMAKE_GENERATOR}
+#                          -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+#                          -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+#    ) 
+# execute_process(
+#     COMMAND
+#         ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}/cmake_ign_msg_build
+#                          --config $<CONFIGURATION>
+#    ) 
+# execute_process(
+#     COMMAND
+#         ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}/cmake_ign_msg_build
+#                          --target install
+#    ) 
+
+# 这种方式间接使用了超级构建，虽然超级构建是在build时生效，但是我们execute_process却可以在配置时执行，
+# 我们在超级构建的外层套了一个壳-cmake工程（有projefct语句），并在配置时构建编译这个壳，使得超级构建在配置时就开始执行
+# 虽然很妙，但是还是不太完美
 execute_process(
     COMMAND
-        ${CMAKE_COMMAND} -H${CMAKE_BINARY_DIR}/message
-                         -B${CMAKE_BINARY_DIR}/cmake_ign_msg_build
+        ${CMAKE_COMMAND} -H${CMAKE_SOURCE_DIR}/external/upstream
+                         -B${CMAKE_BINARY_DIR}
                          -G${CMAKE_GENERATOR}
                          -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-                         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+                         -DSTAGED_INSTALL_PREFIX=${STAGED_INSTALL_PREFIX}
    ) 
 execute_process(
     COMMAND
-        ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}/cmake_ign_msg_build
+        ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}
                          --config $<CONFIGURATION>
    ) 
 execute_process(
     COMMAND
-        ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}/cmake_ign_msg_build
+        ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}
                          --target install
    ) 
 
-set(message_DIR "${CMAKE_INSTALL_PREFIX}/share/cmake/message")
+message(STATUS "message_DIR: ${message_DIR}")
+set(message_DIR "${STAGED_INSTALL_PREFIX}/share/cmake/message")
 add_subdirectory(src)
 
 enable_testing()
 
-# 添加测试
+# 添加测试, 运行build的文件
 add_test(
   NAME
     check_use_message
   COMMAND
-    ${CMAKE_INSTALL_PREFIX}/${INSTALL_BINDIR}/use_message --success
+    ${CMAKE_BINARY_DIR}/${INSTALL_BINDIR}/use_message --success
   )
 
 # this one mimicks using DESTDIR
@@ -132,21 +163,21 @@ add_test(
 
 # # 下面是书中的解释，上面是自己的理解，有点小错误
 # # 注意使用.而不是绝对路径${CMAKE_INSTALL_PREFIX}，这样CPack工具就可以正确理解该规则。CPack的用法将在第11章中介绍。
-# install(
-#   DIRECTORY
-#     ${CMAKE_SOURCE_DIR}/cmake_ign_msg_install
-#   DESTINATION
-#     .
-#   USE_SOURCE_PERMISSIONS
-#   )
+install(
+  DIRECTORY
+    ${STAGED_INSTALL_PREFIX}/
+  DESTINATION
+    .
+  USE_SOURCE_PERMISSIONS
+  )
 
-# # 添加测试, 用户指定的安装目录
-# add_test(
-#   NAME
-#     check_use_message_2
-#   COMMAND
-#     ${CMAKE_INSTALL_PREFIX}/${INSTALL_BINDIR}/use_message
-#   )
+# 添加测试, 用户指定的安装目录
+add_test(
+  NAME
+    check_use_message_2
+  COMMAND
+    ${CMAKE_INSTALL_PREFIX}/${INSTALL_BINDIR}/use_message
+  )
 
 # # Print RPATH of installed executable and run it
 # # 使用SCRIPT参数声明一个附加的安装规则。CMake脚本的install_hook.cmake将被执行，这个脚本将打印已安装的可执行文件的RPATH，并运行它。

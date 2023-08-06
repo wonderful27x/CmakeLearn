@@ -44,4 +44,5 @@ else()
   # 设置安装目录message_DIR用于查找messageConfig.cmake模块
   set(message_DIR ${DEF_message_DIR}
       CACHE PATH "Path to internally built messageConfig.cmake" FORCE)
+  message(STATUS "in message_DIR: ${message_DIR}")
 endif()
