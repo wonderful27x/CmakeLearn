@@ -192,3 +192,5 @@ add_test(
 #       ${CMAKE_CURRENT_BINARY_DIR}/install_hook.cmake
 #     )
 # endif()
+
+include(CMakeCPack.cmake)
